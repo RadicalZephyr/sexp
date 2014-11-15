@@ -45,7 +45,7 @@ SexpPtr Sexpressionizer::getNextAtom() {
     std::string symbol;
 
     char next = m_input.get();
-    while (! m_input  && is_symbol_char(next)) {
+    while (m_input  && is_symbol_char(next)) {
         symbol.push_back(next);
         next = m_input.get();
     }
@@ -71,7 +71,7 @@ SexpPtr Sexpressionizer::getNextList() {
 
         // Eat whitespace
         case ' ':
-            std::ws(m_input);
+            m_input.get();
             next = m_input.peek();
             break;
 
@@ -82,6 +82,8 @@ SexpPtr Sexpressionizer::getNextList() {
 
         default:
             list->addSexp(getNextSexp());
+            next = m_input.peek();
+            break;
         } // End switch
 
     } // End while
