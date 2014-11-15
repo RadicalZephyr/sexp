@@ -1,3 +1,5 @@
+#include <cctype>
+
 #include "sexp.h"
 
 
@@ -22,12 +24,23 @@ SexpPtr Sexpressionizer::getNextSexp() {
 
 }
 
+bool is_symbol_char(char c) {
+    // Symbols/atoms are anything that is not whitespace or a paren
+    return ((! std::isspace(c))
+            && (c != ')')
+            && (c != '('));
+}
+
 SexpPtr Sexpressionizer::getNextAtom() {
 
     std::string symbol;
 
-    // Get all characters until the next whitespace
-    std::getline(m_input, symbol, ' ');
+    char next = m_input.get();
+    while (! m_input.eof()  && is_symbol_char(next)) {
+        symbol.push_back(next);
+        next = m_input.get();
+    }
+
     return std::dynamic_pointer_cast<Sexp>(std::make_shared<Atom>(symbol));
 }
 
