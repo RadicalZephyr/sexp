@@ -68,7 +68,9 @@ class Atom: public Sexp {
 
     virtual void accept(class Visitor &v);
 
-    std::string getText();
+    std::string getText() {
+        return m_text;
+    }
 };
 
 typedef std::shared_ptr<Atom> AtomPtr;
