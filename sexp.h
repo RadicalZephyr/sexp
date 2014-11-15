@@ -23,11 +23,11 @@ typedef std::vector<SexpPtr> SexpVector;
 class List: public Sexp {
     SexpVector m_sexps;
 
-public:
+ public:
     virtual void print(void) {
         std::cout << "(";
         std::string sep = "";
-        for (SexpVector::iterator itr = m_sexps.begin();
+        for (auto itr = m_sexps.begin();
              itr < m_sexps.end(); itr++) {
             std::cout << sep;
             (*itr)->print();
@@ -43,6 +43,13 @@ public:
         m_sexps.push_back(sexp);
     }
 
+    SexpVector::const_iterator begin() {
+        return m_sexps.cbegin();
+    }
+
+    SexpVector::const_iterator end() {
+        return m_sexps.cend();
+    }
 };
 
 typedef std::shared_ptr<List> ListPtr;
@@ -51,7 +58,9 @@ typedef std::shared_ptr<List> ListPtr;
 class Atom: public Sexp {
     std::string m_text;
 
-public:
+ public:
+
+    Atom(std::string text): m_text(text) {};
 
     virtual void print(void) {
         std::cout << m_text;
@@ -59,8 +68,7 @@ public:
 
     virtual void accept(class Visitor &v);
 
-    Atom(std::string text): m_text(text) {};
-
+    std::string getText();
 };
 
 typedef std::shared_ptr<Atom> AtomPtr;
