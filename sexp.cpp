@@ -36,7 +36,7 @@ SexpPtr Sexpressionizer::getNextAtom() {
     std::string symbol;
 
     char next = m_input.get();
-    while (! m_input.eof()  && is_symbol_char(next)) {
+    while (! m_input  && is_symbol_char(next)) {
         symbol.push_back(next);
         next = m_input.get();
     }
@@ -53,7 +53,7 @@ SexpPtr Sexpressionizer::getNextList() {
 
     char next = m_input.peek();
     while (true) {
-        if (m_input.eof()) {
+        if (!m_input) {
             throw std::make_shared<ParseException>("End of file encountered before"
                                                    " close paren was found.");
         }
