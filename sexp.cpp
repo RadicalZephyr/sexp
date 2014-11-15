@@ -4,8 +4,17 @@
 
 
 SexpPtr Sexpressionizer::getNextSexp() {
-    std::ws(m_input);
+
     char next = m_input.peek();
+
+    // Eat leading whitespace a different way.t
+    while (m_input) {
+        if (!std::isspace(next)) {
+            break;
+        }
+        m_input.get();
+        next = m_input.peek();
+    }
 
     switch (next) {
     case '(':
