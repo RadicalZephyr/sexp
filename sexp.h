@@ -6,9 +6,13 @@
 #include <vector>
 #include <string>
 
+class Visitor;
+
 class Sexp {
 public:
     virtual void print(void) = 0;
+
+    virtual void accept(Visitor &v) = 0;
 };
 
 typedef std::shared_ptr<Sexp> SexpPtr;
@@ -32,6 +36,8 @@ public:
         std::cout << ")";
     }
 
+    virtual void accept(class Visitor &v);
+
     void addSexp(SexpPtr sexp) {
         m_sexps.push_back(sexp);
     }
@@ -50,11 +56,24 @@ public:
         std::cout << m_text;
     }
 
+    virtual void accept(class Visitor &v);
+
     Atom(std::string text): m_text(text) {};
 
 };
 
 typedef std::shared_ptr<Atom> AtomPtr;
+
+
+
+class Visitor {
+
+ public:
+    virtual void visit(List *e) = 0;
+    virtual void visit(Atom *e) = 0;
+
+};
+
 
 
 class ParseException: public std::exception

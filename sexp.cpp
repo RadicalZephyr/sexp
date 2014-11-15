@@ -2,6 +2,15 @@
 
 #include "sexp.h"
 
+
+void List::accept(Visitor &v) {
+    v.visit(this);
+}
+
+void Atom::accept(Visitor &v) {
+    v.visit(this);
+}
+
 char Sexpressionizer::skip_ws() {
     char next = m_input.peek();;
     while (m_input) {
