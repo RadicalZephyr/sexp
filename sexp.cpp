@@ -2,20 +2,23 @@
 
 #include "sexp.h"
 
-
-SexpPtr Sexpressionizer::getNextSexp() {
-
-    char next = m_input.peek();
-
-    // Eat leading whitespace a different way.t
+char Sexpressionizer::skip_ws() {
+    char next = m_input.peek();;
     while (m_input) {
         if (!std::isspace(next)) {
-            break;
+            return next;
         }
         m_input.get();
         next = m_input.peek();
     }
+    return -1;
+}
 
+SexpPtr Sexpressionizer::getNextSexp() {
+
+    char next = skip_ws();
+
+    // Eat leading whitespace a different way.t
     switch (next) {
     case '(':
         return getNextList();
@@ -67,13 +70,9 @@ SexpPtr Sexpressionizer::getNextList() {
                                                    " close paren was found.");
         }
 
-        switch (next) {
+        next = skip_ws();
 
-        // Eat whitespace
-        case ' ':
-            m_input.get();
-            next = m_input.peek();
-            break;
+        switch (next) {
 
         // End of the list
         case ')':

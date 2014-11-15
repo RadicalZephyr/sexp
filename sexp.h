@@ -80,6 +80,8 @@ class Sexpressionizer {
 
     std::istream &m_input;
 
+    char skip_ws();
+
 public:
 
     Sexpressionizer(std::istream &input): m_input(input) {};
