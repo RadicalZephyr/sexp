@@ -53,6 +53,10 @@ SexpPtr Sexpressionizer::getNextAtom() {
         next = m_input.get();
     }
 
+    if (m_input) {
+        // Put back the last character (which was not a symbol)
+        m_input.unget();
+    }
     return std::dynamic_pointer_cast<Sexp>(std::make_shared<Atom>(symbol));
 }
 
@@ -76,6 +80,9 @@ SexpPtr Sexpressionizer::getNextList() {
 
         // End of the list
         case ')':
+            // Eat the end paren for this list to avoid closing
+            // multiple lists
+            m_input.get();
             return std::dynamic_pointer_cast<Sexp>(list);
             break;
 
