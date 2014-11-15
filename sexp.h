@@ -26,8 +26,9 @@ class List: public Sexp {
 public:
     virtual void print(void) {
         std::cout << "(";
-        auto sep = "";
-        for (auto itr = m_sexps.begin(); itr < m_sexps.end(); itr++) {
+        std::string sep = "";
+        for (SexpVector::iterator itr = m_sexps.begin();
+             itr < m_sexps.end(); itr++) {
             std::cout << sep;
             (*itr)->print();
             sep = " ";
