@@ -7,7 +7,8 @@
 #include <string>
 
 class Sexp {
-
+public:
+    virtual void print(void) = 0;
 };
 
 typedef std::shared_ptr<Sexp> SexpPtr;
@@ -19,6 +20,17 @@ class List: public Sexp {
     SexpVector m_sexps;
 
 public:
+    virtual void print(void) {
+        std::cout << "(";
+        auto sep = "";
+        for (auto itr = m_sexps.begin(); itr < m_sexps.end(); itr++) {
+            std::cout << sep;
+            (*itr)->print();
+            sep = " ";
+        }
+
+        std::cout << ")";
+    }
 
     void addSexp(SexpPtr sexp) {
         m_sexps.push_back(sexp);
@@ -33,6 +45,11 @@ class Atom: public Sexp {
     std::string m_text;
 
 public:
+
+    virtual void print(void) {
+        std::cout << m_text;
+    }
+
     Atom(std::string text): m_text(text) {};
 
 };
